@@ -1,0 +1,1 @@
+112News – A dynamic news aggregator web app built with HTML, CSS, and JavaScript. Features include: category-based news filtering, RSS and GNews API integration, responsive design, dark mode with system theme detection, country-specific news selection, and smooth UI/UX interactions.
