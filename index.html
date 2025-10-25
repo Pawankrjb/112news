@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>112News - Latest News Updates</title>
+    <style>
+        :root {
+            --coral-gradient: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+            --coral: #ff5e62;
+            --coral2: #ff9966;
+            --primary-gradient: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            --primary: #4b6cb7;
+            --secondary: #182848;
+            --navbar-bg: rgba(255,255,255,0.78);
+            --shadow-1: 0 4px 22px rgba(24,40,72,0.10), 0 1.5px 8px rgba(255,94,98,0.10);
+            --shadow-2: 0 8px 32px rgba(24,40,72,0.13);
+            --shadow-3: 0 16px 44px rgba(255,94,98,0.18);
+            --shadow-pill: 0 2px 10px rgba(255,94,98,0.12);
+            --error-bg: rgba(255,94,98,0.12);
+            --container-bg: #f5f6fa;
+            --text-main: #222;
+            --text-light: #fff;
+            --news-card-bg: #fff;
+            --category-pill-bg: #fff;
+            --category-pill-color: var(--primary);
+            --news-title-color: #182848;
+            --news-description-color: #62627a;
+            --navbar-btn-bg: #fff;
+            --navbar-btn-color: var(--primary);
+            --container-bg-dark: #232a36;
+            --news-card-bg-dark: #1c2230;
+            --category-pill-bg-dark: #232a36;
+            --category-pill-color-dark: #ff9966;
+            --news-title-color-dark: #ff9966;
+            --news-description-color-dark: #bfc7d5;
+            --navbar-bg-dark: rgba(28,34,48,0.92);
+            --navbar-btn-bg-dark: #232a36;
+            --navbar-btn-color-dark: #ff9966;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            color: var(--text-main);
+            letter-spacing: .01em;
+            transition: background 0.3s, color 0.3s;
+        }
+        /* Navbar */
+        .navbar {
+            position: sticky;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: var(--navbar-bg);
+            backdrop-filter: blur(14px);
+            box-shadow: var(--shadow-1);
+            animation: slideDown 0.5s cubic-bezier(.5,.7,.5,1.1);
+            padding: 0;
+            transition: background 0.2s;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100%);}
+            to { transform: translateY(0);}
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--coral-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--coral-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(255, 94, 98, 0.20);
+            letter-spacing: 1.5px;
+        }
+        .navbar-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .navbar-universal {
+            display: flex;
+            gap: 0.7rem;
+        }
+        .navbar-universal-btn, .navbar-country-btn {
+            border: none;
+            outline: none;
+            background: var(--navbar-btn-bg);
+            border-radius: 23px;
+            font-weight: 600;
+            color: var(--navbar-btn-color);
+            padding: 0.45rem 1.15rem;
+            font-size: 1rem;
+            box-shadow: var(--shadow-pill);
+            cursor: pointer;
+            transition: background 0.22s, color 0.22s, transform 0.18s, box-shadow 0.18s;
+        }
+        .navbar-universal-btn.active, .navbar-universal-btn:hover,
+        .navbar-country-btn.active, .navbar-country-btn:hover {
+            background: var(--coral-gradient);
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: var(--shadow-3);
+        }
+        .navbar-country {
+            display: flex;
+            gap: 0.7rem;
+            margin-left: 1rem;
+        }
+        /* Hero Section */
+        .hero {
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            padding: 4rem 0 2.5rem 0;
+            background: linear-gradient(120deg, #4b6cb7 0%, #182848 100%);
+            border-radius: 0 0 48px 48px;
+            box-shadow: 0 8px 42px rgba(24,40,72,0.13), 0 2px 12px rgba(255,94,98,0.11);
+            margin-bottom: 0.5rem;
+            animation: fadeInHero 1.1s cubic-bezier(.4,.8,.4,1.1);
+        }
+        @keyframes fadeInHero {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .hero h1 {
+            font-size: clamp(2.3rem, 5vw, 3.5rem);
+            margin-bottom: 1.1rem;
+            font-weight: 900;
+            letter-spacing: -0.018em;
+            text-shadow: 2px 4px 22px rgba(24,40,72,0.19), 0 1px 12px rgba(255,94,98,0.10);
+        }
+        .hero p {
+            font-size: clamp(1.08rem, 2vw, 1.35rem);
+            opacity: 0.97;
+            font-weight: 500;
+            max-width: 510px;
+            margin: 0 auto;
+            text-shadow: 0 1px 12px rgba(24,40,72,0.10);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem 2rem 1rem;
+            background: var(--container-bg);
+            border-radius: 28px;
+            box-shadow: 0 2px 14px rgba(24,40,72,0.06);
+            margin-top: 2.2rem;
+            transition: background 0.3s;
+        }
+        /* Category Pills */
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.7rem;
+            margin: 2.2rem 0 0.8rem 0;
+        }
+        .category-pill {
+            padding: 0.7rem 1.45rem;
+            background: var(--category-pill-bg);
+            color: var(--category-pill-color);
+            border: none;
+            border-radius: 28px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background 0.22s, color 0.22s, box-shadow 0.18s, transform 0.18s;
+            box-shadow: var(--shadow-pill);
+            outline: none;
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.01em;
+        }
+        .category-pill:hover, .category-pill.active {
+            background: var(--coral-gradient);
+            color: #fff;
+            box-shadow: var(--shadow-3);
+            transform: translateY(-2.5px) scale(1.045);
+        }
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin: 2.5rem 0 2rem 0;
+            min-height: 120px;
+        }
+        .spinner {
+            border: 4px solid rgba(102,126,234,0.18);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* News Grid & Cards */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.2rem;
+            margin-top: 2.2rem;
+            width: 100%;
+        }
+        .news-card {
+            background: var(--news-card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-2);
+            transition: transform 0.22s cubic-bezier(.4,1.1,.5,1), box-shadow 0.22s, background 0.3s;
+            animation: fadeInCard 0.7s cubic-bezier(.39,.8,.42,1.09) both;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: translateY(32px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .news-card:hover {
+            transform: translateY(-16px) scale(1.03);
+            box-shadow: 0 16px 52px 0 rgba(255,94,98,0.18), 0 2px 16px rgba(24,40,72,0.10);
+        }
+        .news-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            background: var(--primary-gradient);
+            display: block;
+            border-bottom: 1px solid #f2f2f2;
+            transition: filter 0.18s;
+        }
+        .news-card:hover .news-image {
+            filter: brightness(0.98) saturate(1.09);
+        }
+        .news-content {
+            padding: 1.25rem 1.3rem 1.3rem 1.3rem;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-title {
+            font-size: 1.22rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--news-title-color);
+            line-height: 1.35;
+            text-shadow: 0 1px 5px rgba(24,40,72,0.05);
+            transition: color 0.3s;
+        }
+        .news-description {
+            color: var(--news-description-color);
+            line-height: 1.6;
+            margin-bottom: 0.85rem;
+            font-size: 1.01rem;
+            transition: color 0.3s;
+        }
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.93rem;
+            color: #999;
+            border-top: 1px solid #f3f3f3;
+            padding-top: 0.8rem;
+            margin-top: auto;
+        }
+        .news-source-badge {
+            display: inline-block;
+            background: var(--coral-gradient);
+            color: #fff;
+            border-radius: 14px;
+            padding: 0.3em 0.95em;
+            font-size: 0.92em;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            box-shadow: 0 2px 10px rgba(255,94,98,0.13);
+            margin-right: 0.3em;
+        }
+        .read-more {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.55rem 1.35rem;
+            background: var(--coral-gradient);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 22px;
+            font-weight: 600;
+            font-size: 1.04rem;
+            transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+            box-shadow: 0 2px 12px rgba(255,94,98,0.13);
+        }
+        .read-more:hover {
+            transform: scale(1.07);
+            background: linear-gradient(90deg, #ff5e62 0%, #ff9966 100%);
+            box-shadow: 0 6px 22px rgba(255,94,98,0.22);
+        }
+        /* Error Card */
+        .error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: var(--error-bg);
+            padding: 2.2rem 1.6rem;
+            border-radius: 18px;
+            margin: 2.5rem auto 1.5rem auto;
+            max-width: 500px;
+            box-shadow: 0 2px 18px rgba(102,126,234,0.10);
+            font-size: 1.15rem;
+            font-weight: 500;
+            animation: fadeInError 0.5s cubic-bezier(.4,.8,.4,1.1);
+        }
+        @keyframes fadeInError {
+            from { opacity: 0; transform: translateY(25px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .error button {
+            margin-top: 1.2rem;
+            padding: 0.65rem 1.3rem;
+            background: var(--primary-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 22px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(102,126,234,0.14);
+            transition: background 0.16s, transform 0.16s;
+        }
+        .error button:hover {
+            background: linear-gradient(120deg, #764ba2 0%, #667eea 100%);
+            transform: scale(1.05);
+        }
+        /* Responsive Layout */
+        @media (max-width: 1200px) {
+            .container, .nav-content { max-width: 98vw; }
+            .news-grid { gap: 1.3rem;}
+        }
+        @media (max-width: 950px) {
+            .news-grid { grid-template-columns: repeat(2, 1fr);}
+            .container { padding: 1.2rem 0.3rem;}
+            .nav-content { padding: 0.7rem 1rem;}
+        }
+        @media (max-width: 700px) {
+            .news-grid { grid-template-columns: 1fr;}
+            .container { padding: 0.7rem 0.1rem;}
+            .nav-content { flex-direction: column; gap: 0.8rem; align-items: flex-start;}
+            .hero { border-radius: 0 0 28px 28px; padding: 2.2rem 0 1.3rem 0;}
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.55rem;}
+            .category-pill { font-size: 0.96rem; padding: 0.6rem 1rem;}
+        }
+        /* --- Dark Mode Styles --- */
+        body.dark {
+            background: #14171f;
+            color: #f7f7fa;
+        }
+        body.dark .container {
+            background: var(--container-bg-dark);
+        }
+        body.dark .news-card {
+            background: var(--news-card-bg-dark);
+        }
+        body.dark .category-pill {
+            background: var(--category-pill-bg-dark);
+            color: var(--category-pill-color-dark);
+        }
+        body.dark .category-pill.active, body.dark .category-pill:hover {
+            background: var(--coral-gradient);
+            color: #fff;
+        }
+        body.dark .news-title {
+            color: var(--news-title-color-dark);
+        }
+        body.dark .news-description {
+            color: var(--news-description-color-dark);
+        }
+        body.dark .navbar {
+            background: var(--navbar-bg-dark);
+        }
+        body.dark .navbar-universal-btn,
+        body.dark .navbar-country-btn {
+            background: var(--navbar-btn-bg-dark);
+            color: var(--navbar-btn-color-dark);
+        }
+        body.dark .navbar-universal-btn.active, body.dark .navbar-universal-btn:hover,
+        body.dark .navbar-country-btn.active, body.dark .navbar-country-btn:hover {
+            background: var(--coral-gradient);
+            color: #fff;
+        }
+        body.dark .logo {
+            background: var(--coral-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.dark .error {
+            background: rgba(255,94,98,0.18);
+            color: #fff;
+        }
+        /* Dark mode toggle styles */
+        .dark-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            border: none;
+            background: transparent;
+            color: #ff9966;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.3em 0.7em;
+            border-radius: 22px;
+            font-weight: bold;
+            transition: background 0.18s, color 0.18s;
+        }
+        .dark-toggle-btn:hover, .dark-toggle-btn:focus {
+            background: rgba(255,153,102,0.09);
+            color: #ff5e62;
+            outline: none;
+        }
+        body.dark .dark-toggle-btn {
+            color: #ff5e62;
+        }
+        body.dark .dark-toggle-btn:hover, body.dark .dark-toggle-btn:focus {
+            background: rgba(255,153,102,0.18);
+            color: #ff9966;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <div class="logo-icon">112</div>
+                <span>112News</span>
+            </div>
+            <div class="navbar-section">
+             
+                <button class="dark-toggle-btn" id="darkToggleBtn" aria-label="Toggle dark mode">
+                    <span id="darkToggleIcon" style="font-size:1.2em;">🌙</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Stay Informed, Stay Ahead</h1>
+        <p>Your trusted source for the latest news and updates from around the world</p>
+    </div>
+
+    <div class="container">
+        <div class="category-pills">
+            <button class="category-pill active" onclick="loadCategory('world')">🌍 World News</button>
+            <button class="category-pill" onclick="loadCategory('tech')">💻 Technology</button>
+            <button class="category-pill" onclick="loadCategory('business')">💼 Business</button>
+            <button class="category-pill" onclick="loadCategory('sports')">⚽ Sports</button>
+            <button class="category-pill" onclick="loadCategory('science')">🔬 Science</button>
+            <button class="category-pill" onclick="loadCategory('health')">❤️ Health</button>
+        </div>
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            Loading latest news...
+        </div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="newsGrid" class="news-grid"></div>
+    </div>
+
+    <script>
+        // RSS feeds for different categories (public sources)
+        const RSS_FEEDS = {
+            'world': 'https://feeds.bbci.co.uk/news/world/rss.xml',
+            'business': 'https://feeds.bbci.co.uk/news/business/rss.xml',
+            'sports': 'https://rss.cnn.com/rss/edition_sport.rss',
+            'tech': 'https://feeds.bbci.co.uk/news/technology/rss.xml',
+            'science': 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml',
+            'health': 'https://feeds.bbci.co.uk/news/health/rss.xml'
+        };
+        async function loadCategory(category) {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const newsGrid = document.getElementById('newsGrid');
+            // Update active button
+            document.querySelectorAll('.category-pill').forEach(pill => {
+                pill.classList.remove('active');
+                if (pill.textContent.toLowerCase().includes(category)) {
+                    pill.classList.add('active');
+                }
+            });
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            newsGrid.innerHTML = '';
+            try {
+                // Try RSS first
+                const rssUrl = RSS_FEEDS[category];
+                const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+                //console.log('🔍 Loading RSS:', apiUrl);
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`Failed to fetch RSS: ${response.status}`);
+                const text = await response.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "text/xml");
+                const items = xml.querySelectorAll("item");
+                let articles = Array.from(items).map(item => ({
+                    title: item.querySelector("title")?.textContent || "Untitled",
+                    link: item.querySelector("link")?.textContent || "#",
+                    description: item.querySelector("description")?.textContent || "Click to read full article...",
+                    pubDate: item.querySelector("pubDate")?.textContent || "",
+                    author: item.querySelector("author")?.textContent || "News Source",
+                    thumbnail: item.querySelector("media\\:thumbnail, thumbnail, enclosure")?.getAttribute("url") || ""
+                }));
+                // If RSS returned no articles, fallback to GNews
+                if (articles.length === 0) throw new Error("RSS returned no articles.");
+                loading.style.display = 'none';
+                displayNews(articles);
+                //console.log('✅ Displaying', articles.length, 'RSS articles');
+            } catch (rssError) {
+                //console.warn("⚠️ RSS failed, loading from GNews:", rssError.message);
+                try {
+                    // GNews fallback
+                    const gnewsApiKey = "823b4e81f477e9af811d58144f9ab7a7";
+                    const categoryMap = {
+                        'world': 'world',
+                        'business': 'business',
+                        'sports': 'sports',
+                        'tech': 'technology',
+                        'science': 'science',
+                        'health': 'health'
+                    };
+                    const gnewsCategory = categoryMap[category] || 'general';
+                    const gnewsUrl = `https://gnews.io/api/v4/top-headlines?category=${gnewsCategory}&lang=en&country=in&max=10&apikey=${gnewsApiKey}`;
+                    const gResponse = await fetch(gnewsUrl);
+                    if (!gResponse.ok) throw new Error(`GNews API failed: ${gResponse.status}`);
+                    const gData = await gResponse.json();
+                    if (!gData.articles || gData.articles.length === 0) throw new Error("GNews returned no articles.");
+                    loading.style.display = 'none';
+                    displayNews(gData.articles.map(article => ({
+                        title: article.title,
+                        link: article.url,
+                        description: article.description || "Click to read full article...",
+                        pubDate: article.publishedAt,
+                        author: article.source.name || "News Source",
+                        thumbnail: article.image || ""
+                    })));
+                    //console.log('✅ Displaying', gData.articles.length, 'GNews articles');
+                } catch (gnewsError) {
+                    loading.style.display = 'none';
+                    //console.error('❌ Both sources failed:', gnewsError);
+                    error.innerHTML = `<strong>⚠️ Could Not Load News</strong><br><br>
+                        ${gnewsError.message}<br><br>
+                        Please check your internet connection and try again.<br><br>
+                        <button onclick="loadCategory('${category}')" style="padding:10px 20px;background:#667eea;color:white;border:none;border-radius:25px;cursor:pointer;font-weight:bold;">🔄 Try Again</button>`;
+                    error.style.display = 'block';
+                }
+            }
+        }
+
+        function displayNews(articles) {
+            const newsGrid = document.getElementById('newsGrid');
+            newsGrid.innerHTML = "";
+            articles.forEach((article, index) => {
+                const card = document.createElement('div');
+                card.className = 'news-card';
+                card.style.animationDelay = `${index * 0.05}s`;
+                const publishedDate = article.pubDate ?
+                    new Date(article.pubDate).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) : 'Recently';
+                // Extract image from content or use enclosure
+                let imageUrl = article.thumbnail || article.enclosure?.link || '';
+                if (!imageUrl) {
+                    imageUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 220%22%3E%3Cdefs%3E%3ClinearGradient id=%22grad%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22%3E%3Cstop offset=%220%25%22 style=%22stop-color:%23667eea%22/%3E%3Cstop offset=%22100%25%22 style=%22stop-color:%23764ba2%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22400%22 height=%22220%22 fill=%22url(%23grad)%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-size=%2230%22 font-weight=%22bold%22 font-family=%22Arial%22%3E112News%3C/text%3E%3C/svg%3E';
+                }
+                // Clean description (remove HTML tags)
+                const description = article.description
+                    ? article.description.replace(/<[^>]*>/g, '').substring(0, 200) + '...'
+                    : 'Click to read the full article...';
+                card.innerHTML = `
+                    <img src="${imageUrl}" alt="${article.title}" class="news-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 220%22%3E%3Cdefs%3E%3ClinearGradient id=%22grad%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22%3E%3Cstop offset=%220%25%22 style=%22stop-color:%23667eea%22/%3E%3Cstop offset=%22100%25%22 style=%22stop-color:%23764ba2%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22400%22 height=%22220%22 fill=%22url(%23grad)%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-size=%2230%22 font-weight=%22bold%22 font-family=%22Arial%22%3E112News%3C/text%3E%3C/svg%3E'">
+                    <div class="news-content">
+                        <h2 class="news-title">${article.title}</h2>
+                        <p class="news-description">${description}</p>
+                        <div class="news-meta">
+                            <span class="news-source-badge">${article.author || 'News Source'}</span>
+                            <span>${publishedDate}</span>
+                        </div>
+                        <a href="${article.link}" target="_blank" class="read-more">Read Full Article →</a>
+                    </div>
+                `;
+                newsGrid.appendChild(card);
+            });
+        }
+
+        // --- Modern UI/UX: Universal & Country selection logic ---
+        let currentCountry = 'in';
+        let isUniversal = true;
+        function setUniversal() {
+            isUniversal = true;
+            document.getElementById('btn-universal').classList.add('active');
+            document.querySelectorAll('.navbar-country-btn').forEach(btn => btn.classList.remove('active'));
+            loadCategory(getActiveCategory());
+        }
+        function setCountry(code) {
+            isUniversal = false;
+            currentCountry = code;
+            document.getElementById('btn-universal').classList.remove('active');
+            document.querySelectorAll('.navbar-country-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-country-' + code).classList.add('active');
+            loadCategory(getActiveCategory());
+        }
+        function getActiveCategory() {
+            let el = document.querySelector('.category-pill.active');
+            if (!el) return 'world';
+            if (el.textContent.toLowerCase().includes('world')) return 'world';
+            if (el.textContent.toLowerCase().includes('tech')) return 'tech';
+            if (el.textContent.toLowerCase().includes('business')) return 'business';
+            if (el.textContent.toLowerCase().includes('sports')) return 'sports';
+            if (el.textContent.toLowerCase().includes('science')) return 'science';
+            if (el.textContent.toLowerCase().includes('health')) return 'health';
+            return 'world';
+        }
+        // Patch loadCategory to respect country/universal selection
+        const _originalLoadCategory = loadCategory;
+        window.loadCategory = function(category) {
+            document.querySelectorAll('.category-pill').forEach(pill => {
+                pill.classList.remove('active');
+                if (pill.textContent.toLowerCase().includes(category)) {
+                    pill.classList.add('active');
+                }
+            });
+            // Patch GNews API params if not universal
+            window._gnewsCountry = isUniversal ? null : currentCountry;
+            window._gnewsLang = isUniversal ? 'en' : (currentCountry === 'in' ? 'en' : 'en');
+            _originalLoadCategory(category);
+        }
+        // Patch the GNews fetch in loadCategory to use modern country/lang
+        // (Monkey-patch fetch to inject country/lang for GNews)
+        const _origFetch = window.fetch;
+        window.fetch = function(url, ...args) {
+            if (typeof url === "string" && url.includes("gnews.io/api/v4/top-headlines")) {
+                let u = new URL(url);
+                if (window._gnewsCountry) u.searchParams.set('country', window._gnewsCountry);
+                if (window._gnewsLang) u.searchParams.set('lang', window._gnewsLang);
+                url = u.toString();
+            }
+            return _origFetch(url, ...args);
+        }
+        // --- Dark Mode Logic ---
+        const darkToggleBtn = document.getElementById('darkToggleBtn');
+        const darkToggleIcon = document.getElementById('darkToggleIcon');
+        // Persist dark mode in localStorage
+        function setDarkMode(enabled) {
+            if (enabled) {
+                document.body.classList.add('dark');
+                darkToggleIcon.textContent = '☀️';
+                localStorage.setItem('darkMode', '1');
+            } else {
+                document.body.classList.remove('dark');
+                darkToggleIcon.textContent = '🌙';
+                localStorage.setItem('darkMode', '0');
+            }
+        }
+        darkToggleBtn.addEventListener('click', () => {
+            setDarkMode(!document.body.classList.contains('dark'));
+        });
+        // On load, set dark mode based on localStorage or prefers-color-scheme
+        (function() {
+            let darkPref = localStorage.getItem('darkMode');
+            if (darkPref === null) {
+                // Try prefers-color-scheme
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    setDarkMode(true);
+                } else {
+                    setDarkMode(false);
+                }
+            } else {
+                setDarkMode(darkPref === '1');
+            }
+        })();
+        // Set default: universal, India
+        document.getElementById('btn-universal').classList.add('active');
+        document.getElementById('btn-country-in').classList.remove('active');
+        // Load world news by default
+        loadCategory('world');
+    </script>
+</body>
+</html>
